@@ -1,3 +1,15 @@
-from django.shortcuts import render
+from rest_framework.generics import CreateAPIView
 
-# Create your views here.
+from .models import User
+
+from .serializers import RegisterSerializer, LoginSerializer
+
+class RegisterAPIView(CreateAPIView):
+    serializer_class = RegisterSerializer
+
+
+class LoginAPIView(CreateAPIView): 
+    serializer_class = LoginSerializer
+
+    def perform_create(self, serializer):
+        pass
