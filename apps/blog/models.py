@@ -8,6 +8,7 @@ from apps.user.models import User
 class Blog(BaseModel):
     """Maqolalar uchun model"""
     title = models.CharField('Sarlavhasi', max_length=250)
+    slug = models.SlugField('Slugi', max_length=250)
     category_id = models.ForeignKey('Category_for_blog', on_delete=models.SET_NULL, null=True, blank=True)
     author = models.CharField('Muallif', max_length=150)
     author_speciality = models.CharField('Muallif kasbi', max_length=150)

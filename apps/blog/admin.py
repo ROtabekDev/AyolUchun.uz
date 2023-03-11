@@ -12,7 +12,8 @@ class CategoryForBlogModelAdmin(admin.ModelAdmin):
 
 @admin.register(Blog)
 class BlogModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'author') 
+    list_display = ('id', 'title', 'author')
+    prepopulated_fields = {"slug": ("title",)} 
     list_display_links = ('title',)
     list_filter = ('category_id',) 
 
