@@ -158,8 +158,8 @@ class Region(BaseModel):
         return self.name
     
     class Meta:
-        verbose_name = 'Mamlakat'
-        verbose_name_plural = 'Mamlakatlar'
+        verbose_name = 'Viloyat'
+        verbose_name_plural = 'Viloyatlar'
 
 class Speciality(BaseModel):
     """Mutaxassislik"""

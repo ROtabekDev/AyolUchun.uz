@@ -41,7 +41,7 @@ class Certificate(BaseModel):
     """Sertifikat"""
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
-    file = models.FileField('Fayl', upload_to='main/certificate/file/')
+    file = models.FileField('Fayl', blank=True, null=True)
 
     def __str__(self):
         return self.user_id.phone_number
