@@ -27,11 +27,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # apps
-    path('user/', include('apps.user.urls')),
-    path('blog/', include('apps.blog.urls')),
-    path('course/', include('apps.course.urls')),
-    path('main/', include('apps.main.urls')),
-    path('payment/', include('apps.payment.urls')),
+    path('api/v1/user/', include('apps.user.urls')),
+    path('api/v1/blog/', include('apps.blog.urls')),
+    path('api/v1/course/', include('apps.course.urls')),
+    path('api/v1/main/', include('apps.main.urls')),
+    path('api/v1/payment/', include('apps.payment.urls')),
 
     # swagger
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

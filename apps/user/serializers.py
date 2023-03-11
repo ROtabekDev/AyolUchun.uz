@@ -6,8 +6,11 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.exceptions import AuthenticationFailed
 
 from .models import (
-    User, UserProfile, Country, Region,
+    User, UserProfile, Country, Region, Purchased_course
 )
+
+from apps.course.models import Video_comment
+from apps.main.models import Certificate
 
 class RegisterSerializer(ModelSerializer):
     password = serializers.CharField(min_length=6, max_length=68, write_only=True)
@@ -27,7 +30,10 @@ class RegisterSerializer(ModelSerializer):
         
         del password2
 
-        return attrs 
+        return attrs
+    
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
 
 class LoginSerializer(serializers.ModelSerializer): 
     phone_number = serializers.CharField(max_length=15) 
@@ -43,9 +49,14 @@ class LoginSerializer(serializers.ModelSerializer):
     def validate(self, attrs): 
         phone_number = attrs.get('phone_number', '')
         password = attrs.get('password', '') 
-
+        print(phone_number)
+        print(password)
+        user_data = {
+            'phone_number': phone_number,
+            'password': password
+        }
         user = authenticate(phone_number=phone_number, password=password) 
-        
+        print(user)
  
         if not user:
             raise AuthenticationFailed({
@@ -58,3 +69,43 @@ class LoginSerializer(serializers.ModelSerializer):
             'phone_number': user.phone_number, 
             'tokens': user.tokens
         } 
+
+
+class UserSerializer(ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'patronymic', 'phone_number', 'email', 'email_is_approad')
+        
+
+class UserDetailSerializer(ModelSerializer):
+    user = UserSerializer()
+    country_id = serializers.StringRelatedField()
+    region_id = serializers.StringRelatedField()
+    specialty = serializers.StringRelatedField() 
+
+    class Meta:
+        model = UserProfile
+        fields = (
+            'id', 'user', 'profile_pic', 'birthday', 
+            'gender', 'country_id', 'region_id', 
+            'zip_code', 'address', 'facebook_profile', 
+            'instagram_profile', 'imkon_profile', 
+            'linkedin_profile', 'telegram_profile', 
+            'workplace', 'position', 'specialty', 
+            'description'
+            )
+         
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        print(instance.user)
+        courses = Purchased_course.objects.filter(user_id=instance.user).count() 
+        comments = Video_comment.objects.filter(user=instance.user).count() 
+        certificates = Certificate.objects.filter(user_id=instance.user).count()  
+
+        representation['courses'] = courses
+        representation['comments'] = comments
+        representation['certificates'] = certificates
+        
+        return representation

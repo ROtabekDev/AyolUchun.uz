@@ -77,14 +77,26 @@ class Purchased_course(BaseModel):
     """Sotib olingan kurslar"""
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
-    is_finished = models.BooleanField(default=False)
-
+    
     def __str__(self):
         return f'User: {self.user_id.phone_number}. Kurs: {self.course_id.title}'
 
     class Meta:
         verbose_name = 'Sotib olingan kurs'
         verbose_name_plural = 'Sotib olingan kurslar'
+
+
+class Completed_course(BaseModel):
+    """Tugatilgan kurslar"""
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
+    
+    def __str__(self):
+        return f'User: {self.user_id.phone_number}. Kurs: {self.course_id.title}'
+
+    class Meta:
+        verbose_name = 'Tugatilgan kurs'
+        verbose_name_plural = 'Tugatilgan kurslar'
 
 
 class UserProfile(BaseModel):
@@ -96,7 +108,7 @@ class UserProfile(BaseModel):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Foydalanuvchi")
-    profile_pic = models.ImageField('Rasm', upload_to='user/user_profile/profile_pic/', default='media/user/user_profile/profile_pic/default-user-image.png')
+    profile_pic = models.ImageField('Rasm', upload_to='user/user_profile/profile_pic/', default='user/user_profile/profile_pic/default-user-image.png')
     birthday = models.DateTimeField('Tug`ilgan sanasi', null=True, blank=True)
     gender = models.CharField('Jinsi', max_length=10, choices=GENDER_TYPE, null=True, blank=True)
     country_id = models.ForeignKey('Country', on_delete=models.SET_NULL, blank=True, null=True)

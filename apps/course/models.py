@@ -1,9 +1,13 @@
 from django.db import models
+from django.conf import settings
 
 from helpers.models import BaseModel
 from helpers.utils import get_timer
 
 from mutagen.mp4 import MP4, MP4StreamInfoError
+
+
+
 
 
 class Category_for_course(BaseModel):
@@ -104,3 +108,31 @@ class Episode(BaseModel):
     class Meta:
         verbose_name = 'Epizod'
         verbose_name_plural = 'Epizodlar'
+
+class Course_completion(BaseModel):
+    """Kurs uchun xulosa"""
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
+    rate_number = models.PositiveIntegerField('Reyting qiymati', default=1)
+    message = models.CharField('Xabar', max_length=250)
+
+    def __str__(self):
+        return f'User: {self.user_id.phone_number}. Kurs: {self.course_id.title}. Baho: {self.rate_number}.'
+    
+    class Meta:
+        verbose_name = 'Kurs uchun xulosa'
+        verbose_name_plural = 'Kurs uchun xulosalar'
+
+class Video_comment(BaseModel):
+    """Izohlar"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Muallif')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, verbose_name='Asosiy izoh', blank=True, null=True)
+    text = models.TextField(verbose_name='Izoh matni')
+    is_child = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id) 
+
+    class Meta:
+        verbose_name = 'Izoh'   
+        verbose_name_plural = 'Izohlar'   
