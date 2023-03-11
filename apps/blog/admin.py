@@ -17,4 +17,9 @@ class BlogModelAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
     list_filter = ('category_id',) 
 
+
+@admin.register(Views)
+class ViewsModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'blog_id', 'user_id', 'ip_address')
+    list_display_links = ('blog_id', 'user_id') 
  

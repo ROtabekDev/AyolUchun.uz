@@ -6,10 +6,7 @@ from helpers.utils import get_timer
 
 from mutagen.mp4 import MP4, MP4StreamInfoError
 
-
-
-
-
+ 
 class Category_for_course(BaseModel):
     """Kurslar uchun kategoriya"""
     title = models.CharField('Sarlavhasi', max_length=150)

@@ -25,6 +25,7 @@ class Notification(BaseModel):
     """Bildirishnoma uchun model"""
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField('Sarlavhasi', max_length=150)
+    slug = models.SlugField('Slugi', max_length=150)
     message = models.TextField('Xabar')
     viewed = models.BooleanField(default=False)
 
