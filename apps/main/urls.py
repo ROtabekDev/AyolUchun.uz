@@ -1,4 +1,9 @@
 from django.urls import path
 
-urlpatterns = [ 
+from .views import (
+    ContactCreateAPIView
+)
+
+urlpatterns = [
+    path('create/contact/', ContactCreateAPIView.as_view())
 ]
