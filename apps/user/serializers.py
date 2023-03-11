@@ -6,7 +6,8 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.exceptions import AuthenticationFailed
 
 from .models import (
-    User, UserProfile, Country, Region, Purchased_course
+    User, UserProfile, Country, Region, 
+    Speciality, Purchased_course, 
 )
 
 from apps.course.models import Video_comment
@@ -107,5 +108,46 @@ class UserDetailSerializer(ModelSerializer):
         representation['courses'] = courses
         representation['comments'] = comments
         representation['certificates'] = certificates
-        
+
         return representation
+    
+class CountrySerializer(ModelSerializer):
+
+    class Meta:
+        model = Country
+        fields = ('id', 'name')
+
+
+class RegionSerializer(ModelSerializer):
+    country_id = CountrySerializer()
+
+    class Meta:
+        model = Region
+        fields = ('id', 'name', 'country_id')
+
+
+class SpecialitySerializer(ModelSerializer):
+
+    class Meta:
+        model = Speciality
+        fields = ('id', 'title')
+
+
+
+class UserProfileUpdateSerializer(ModelSerializer):
+    user = UserSerializer()
+    country_id = CountrySerializer()
+    region_id = RegionSerializer()
+    specialty = SpecialitySerializer() 
+
+    class Meta:
+        model = UserProfile
+        fields = (
+            'id', 'user', 'profile_pic', 'birthday', 
+            'gender', 'country_id', 'region_id', 
+            'zip_code', 'address', 'facebook_profile', 
+            'instagram_profile', 'imkon_profile', 
+            'linkedin_profile', 'telegram_profile', 
+            'workplace', 'position', 'specialty', 
+            'description'
+            )
