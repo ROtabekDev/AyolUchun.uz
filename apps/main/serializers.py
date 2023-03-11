@@ -14,6 +14,13 @@ class NotificationListSerializer(ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ('title', 'message', 'created_at', 'viewed')
+        fields = ('title', 'slug', 'message', 'created_at', 'viewed')
+
+
+class NotificationDetailSerializer(ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = ('title', 'message', 'created_at')
 
     
