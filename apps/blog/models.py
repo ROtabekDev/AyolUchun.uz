@@ -4,6 +4,8 @@ from helpers.models import BaseModel
 
 from apps.user.models import User
 
+from ckeditor.fields import RichTextField
+
 
 class Blog(BaseModel):
     """Maqolalar uchun model"""
@@ -13,7 +15,7 @@ class Blog(BaseModel):
     author = models.CharField('Muallif', max_length=150)
     author_speciality = models.CharField('Muallif kasbi', max_length=150)
     slider = models.ImageField('Rasm', upload_to='blog/blog/slider/')
-    content = models.TextField('Maqola matni')
+    content = RichTextField()
 
     def __str__(self):
         return self.title
