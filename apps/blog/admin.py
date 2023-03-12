@@ -20,6 +20,6 @@ class BlogModelAdmin(admin.ModelAdmin):
 
 @admin.register(Views)
 class ViewsModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'blog_id', 'user_id', 'ip_address')
+    list_display = ('id', 'blog_id', 'user_id', 'device_id', 'ip_address')
     list_display_links = ('blog_id', 'user_id') 
  

@@ -1,4 +1,5 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.response import Response
 from rest_framework import filters
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -8,7 +9,9 @@ from .serializers import (
     BlogDetailSerializer
 )
 
-from .models import Category_for_blog, Blog
+from .models import Category_for_blog, Blog, Views
+
+from helpers.utils import get_client_ip
 
 class CategoryBlogListAPIView(ListAPIView):
     queryset = Category_for_blog.objects.all()
@@ -26,3 +29,29 @@ class BlogRetrieveAPIView(RetrieveAPIView):
     queryset = Blog.objects.all()
     lookup_field = 'slug'
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+         
+        if self.request.user.is_authenticated:
+             
+            Views.objects.update_or_create(
+                blog_id=instance,
+                user_id=self.request.user,
+            )
+        elif self.request.headers.get("device-id", None):
+             
+            Views.objects.update_or_create(
+                blog_id=instance,
+                device_id=self.request.headers.get("device-id", None),
+            )
+        else:
+            ip = get_client_ip(self.request)
+
+            Views.objects.update_or_create(
+                blog_id=instance,
+                ip_address=ip
+            )
+
+        return Response(serializer.data)
+   

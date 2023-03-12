@@ -40,10 +40,11 @@ class Views(BaseModel):
     """Ko`rishlar soni"""
     blog_id = models.ForeignKey(Blog, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    device_id = models.CharField('Qurilma manzili', max_length=250, null=True, blank=True)
     ip_address = models.CharField('Ip manzili', max_length=250, null=True, blank=True)
 
     def __str__(self):
-        return self.ip_address
+        return self.blog_id.title
     
     class Meta:
         verbose_name = 'Ko`rishlar soni'
