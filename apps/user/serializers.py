@@ -52,10 +52,7 @@ class LoginSerializer(serializers.ModelSerializer):
         password = attrs.get('password', '') 
         print(phone_number)
         print(password)
-        user_data = {
-            'phone_number': phone_number,
-            'password': password
-        }
+
         user = authenticate(phone_number=phone_number, password=password) 
         print(user)
  
