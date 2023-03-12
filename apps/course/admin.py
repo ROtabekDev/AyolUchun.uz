@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category_for_course, Course, Section, Episode
+from .models import Category_for_course, Course, Section, Episode, Course_completion, Video_comment
 
 @admin.register(Category_for_course)
 class CategoryForCourseModelAdmin(admin.ModelAdmin):
@@ -27,3 +27,14 @@ class EpisodeModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'length', 'section_id')
     list_display_links = ('title',)   
 
+@admin.register(Course_completion)
+class CourseCompletionModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_id', 'course_id', 'rate_number') 
+    list_display_links = ('user_id', 'course_id')
+    list_filter = ('course_id',) 
+
+@admin.register(Video_comment)
+class VideoCommentModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'parent', 'text', 'is_child') 
+    list_display_links = ('user', 'text')
+    list_filter = ('user',) 

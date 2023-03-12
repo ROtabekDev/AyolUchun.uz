@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import MaxValueValidator,MinValueValidator
 
 from helpers.models import BaseModel
 from helpers.utils import get_timer
@@ -74,6 +75,7 @@ class Episode(BaseModel):
     """Videolar uchun model"""
     title = models.CharField('Nomi', max_length=150)
     file = models.FileField('Fayl', upload_to='course/episode/file/')
+    place_number = models.PositiveIntegerField('Tartib nomeri', default=1)
     length = models.DecimalField(max_digits=100,decimal_places=2, blank=True, null=True)
     section_id = models.ForeignKey(Section, on_delete=models.CASCADE, blank=True, null=True)
 
@@ -110,7 +112,7 @@ class Course_completion(BaseModel):
     """Kurs uchun xulosa"""
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
-    rate_number = models.PositiveIntegerField('Reyting qiymati', default=1)
+    rate_number = models.PositiveIntegerField('Reyting qiymati', validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     message = models.CharField('Xabar', max_length=250)
 
     def __str__(self):
