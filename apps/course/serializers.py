@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from .models import Category_for_course, Course, Section, Episode, Course_completion, Video_comment, Purchased_course
+from .models import Category_for_course, Course, Section, Episode, Course_completion, Video_comment, Purchased_course, Completed_course
 
 from django.db.models import Sum
 
@@ -110,3 +110,25 @@ class CourseRetrieveSerializer(ModelSerializer):
             representation['sections'] = serializer.data  
 
         return representation
+    
+
+class PurchasedCourseSerializer(ModelSerializer):
+
+    class Meta:
+        model = Purchased_course
+        fields = ('user_id', 'course_id')
+
+
+class CompletedCourseSerializer(ModelSerializer):
+
+    class Meta:
+        model = Completed_course
+        fields = ('user_id', 'course_id')
+
+
+class CourseCompletionSerializer(ModelSerializer):
+    completed_course = CompletedCourseSerializer()
+
+    class Meta:
+        model = Completed_course
+        fields = ('completed_course', 'rate_number', 'message')     
