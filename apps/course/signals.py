@@ -13,7 +13,7 @@ def create_profile(sender, instance, created, **kwargs):
     if created:
         user_name = f"{instance.user_id.first_name} {instance.user_id.last_name}" 
         course_name = instance.course_id.title
-        
+        print('olma')
         generate_certificate(user_name=user_name, course_name=course_name, completed_course_id=instance.id)
         
         file_path =f"media/main/certificate/file/{user_name}_{course_name}_{instance.id}.pdf"

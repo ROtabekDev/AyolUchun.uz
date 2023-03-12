@@ -66,7 +66,7 @@ class Section(BaseModel):
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        return f"{self.section_number}. {self.section_title}"
     
     class Meta:
         verbose_name = 'Bo`lim'
@@ -77,7 +77,7 @@ class Episode(BaseModel):
     title = models.CharField('Nomi', max_length=150)
     file = models.FileField('Fayl', upload_to='course/episode/file/')
     place_number = models.PositiveIntegerField('Tartib nomeri', default=1)
-    length = models.DecimalField(max_digits=100,decimal_places=2, blank=True, null=True)
+    length = models.DecimalField(max_digits=100,decimal_places=2, blank=True, null=True, default=0)
     section_id = models.ForeignKey(Section, on_delete=models.CASCADE, blank=True, null=True)
 
     def get_video_length(self):
@@ -86,10 +86,7 @@ class Episode(BaseModel):
             return video.info.length
             
         except MP4StreamInfoError:
-            return 0.0
-
-    def get_video_length_time(self):
-        return get_timer(self.length)
+            return 0.0 
     
     def get_video(self):
         return self.file.path
@@ -97,8 +94,7 @@ class Episode(BaseModel):
     def save(self,*args, **kwargs):
         self.length=self.get_video_length()
         print(self.length)
-        print(self.file.path)
-        print(self.get_video_length_time()) 
+        print(self.file.path) 
 
         return super().save(*args, **kwargs)
     
@@ -144,7 +140,7 @@ class Course_completion(BaseModel):
     message = models.CharField('Xabar', max_length=250)
 
     def __str__(self):
-        return f'User: {self.user_id.phone_number}. Kurs: {self.course_id.title}. Baho: {self.rate_number}.'
+        return f'User: {self.completed_course.user_id.phone_number}. Kurs: {self.completed_course.course_id.title}. Baho: {self.rate_number}.'
     
     class Meta:
         verbose_name = 'Kurs uchun xulosa'
