@@ -3,7 +3,7 @@ from rest_framework.generics import (
 )
 from rest_framework.response import Response
 
-from .models import Category_for_course, Course, Course_completion, Section, Episode
+from .models import Category_for_course, Course, Course_completion, Video_comment, Section, Episode
 
 from .serializers import (
     CategoryForCourseListSerializer,
@@ -11,7 +11,8 @@ from .serializers import (
     CourseRetrieveSerializer,
     PurchasedCourseSerializer,
     CompletedCourseSerializer,
-    CourseCompletionSerializer
+    CourseCompletionSerializer,
+    VideoCommentSerializar
 )
 
 
@@ -39,6 +40,16 @@ class PurchasedCourseCreateAPIView(CreateAPIView):
 class CompletedCourseCreateAPIView(CreateAPIView):
     serializer_class = CompletedCourseSerializer
 
+
 class CourseCompletionCreateListAPIView(ListCreateAPIView):
     queryset = Course_completion.objects.all()
     serializer_class = CourseCompletionSerializer
+
+
+class CommentListCreateAPIView(ListCreateAPIView):  
+    queryset = Video_comment.objects.all()
+    serializer_class = VideoCommentSerializar
+    filterset_fields = ('episode_id',)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

@@ -3,6 +3,8 @@ from rest_framework.serializers import ModelSerializer
 
 from .models import Category_for_course, Course, Section, Episode, Course_completion, Video_comment, Purchased_course, Completed_course
 
+from apps.user.serializers import UserSerializer
+
 from django.db.models import Sum
 
 from helpers.utils import get_timer
@@ -49,13 +51,25 @@ class CourseListSerializer(ModelSerializer):
 class EpisodeSerializer(ModelSerializer):
     section_id = serializers.StringRelatedField()
     video_length_time = serializers.SerializerMethodField()
-
+    comments = serializers.DictField(read_only=True) 
     class Meta:
         model = Episode
-        fields = ('title', 'file', 'place_number', 'length', 'section_id', 'video_length_time')
+        fields = ('title', 'file', 'place_number', 'length', 'section_id', 'video_length_time', 'comments')
 
     def get_video_length_time(self, obj):
         return get_timer(obj.length)
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)  
+ 
+        comments = Video_comment.objects.filter(episode_id=instance)
+
+ 
+        if comments.exists():
+            serializer = VideoCommentSerializar(comments, many=True)
+            representation['comments']= serializer.data 
+ 
+        return representation
 
 
 class SectionSerializer(ModelSerializer):
@@ -130,5 +144,14 @@ class CourseCompletionSerializer(ModelSerializer):
     completed_course = CompletedCourseSerializer()
 
     class Meta:
-        model = Completed_course
+        model = Course_completion
         fields = ('completed_course', 'rate_number', 'message')     
+
+
+class VideoCommentSerializar(ModelSerializer):
+    
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Video_comment
+        fields = ('user', 'parent', 'episode_id', 'text', 'is_child')

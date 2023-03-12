@@ -150,6 +150,7 @@ class Video_comment(BaseModel):
     """Izohlar"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Muallif')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, verbose_name='Asosiy izoh', blank=True, null=True)
+    episode_id = models.ForeignKey(Episode, on_delete=models.CASCADE, verbose_name='Video')
     text = models.TextField(verbose_name='Izoh matni')
     is_child = models.BooleanField(default=False)
 
