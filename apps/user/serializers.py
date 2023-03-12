@@ -7,10 +7,10 @@ from rest_framework.exceptions import AuthenticationFailed
 
 from .models import (
     User, UserProfile, Country, Region, 
-    Speciality, Purchased_course, 
+    Speciality, 
 )
 
-from apps.course.models import Video_comment
+from apps.course.models import Video_comment, Purchased_course
 from apps.main.models import Certificate
 
 class RegisterSerializer(ModelSerializer):

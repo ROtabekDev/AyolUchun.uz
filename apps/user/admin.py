@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 from .models import (
-    User, UserProfile, Purchased_course, 
-    Country, Region, Speciality, Completed_course
+    User, UserProfile,  
+    Country, Region, Speciality 
     )
 
 
@@ -17,21 +17,7 @@ class UserProfileModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'birthday', 'country_id', 'region_id')
     list_display_links = ('user',) 
 
-
-@admin.register(Purchased_course)
-class BlogModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'course_id') 
-    list_display_links = ('user_id', 'course_id')
-    list_filter = ('user_id', 'course_id') 
-
-
-@admin.register(Completed_course)
-class CompletedCourseModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'course_id') 
-    list_display_links = ('user_id', 'course_id')
-    list_filter = ('user_id', 'course_id') 
-
-
+ 
 @admin.register(Country)
 class CountryModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)

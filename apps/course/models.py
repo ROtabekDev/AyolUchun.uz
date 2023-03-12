@@ -7,6 +7,7 @@ from helpers.utils import get_timer
 
 from mutagen.mp4 import MP4, MP4StreamInfoError
 
+
  
 class Category_for_course(BaseModel):
     """Kurslar uchun kategoriya"""
@@ -108,10 +109,37 @@ class Episode(BaseModel):
         verbose_name = 'Epizod'
         verbose_name_plural = 'Epizodlar'
 
-class Course_completion(BaseModel):
-    """Kurs uchun xulosa"""
+class Purchased_course(BaseModel):
+    """Sotib olingan kurslar"""
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
+    
+    def __str__(self):
+        return f'User: {self.user_id.phone_number}. Kurs: {self.course_id.title}'
+
+    class Meta:
+        verbose_name = 'Sotib olingan kurs'
+        verbose_name_plural = 'Sotib olingan kurslar'
+
+
+class Completed_course(BaseModel):
+    """Tugatilgan kurslar"""
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
+    
+    def __str__(self):
+        return f'User: {self.user_id.phone_number}. Kurs: {self.course_id.title}'
+
+    class Meta:
+        verbose_name = 'Tugatilgan kurs'
+        verbose_name_plural = 'Tugatilgan kurslar'
+
+
+class Course_completion(BaseModel):
+    """Kurs uchun xulosa"""
+    completed_course = models.ForeignKey(Completed_course, on_delete=models.CASCADE, verbose_name='Tugatilgan kurs')
+    # user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
+    # course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
     rate_number = models.PositiveIntegerField('Reyting qiymati', validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     message = models.CharField('Xabar', max_length=250)
 

@@ -8,7 +8,6 @@ from django.core.validators import RegexValidator
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from helpers.models import BaseModel
-from apps.course.models import Course
 
 class CustomUserManager(BaseUserManager):
     """Maxsus foydalanuvchi menejeri"""
@@ -71,33 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
             'refresh': str(refresh),
             'access': str(refresh.access_token)
         }
-    
-    
-class Purchased_course(BaseModel):
-    """Sotib olingan kurslar"""
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
-    
-    def __str__(self):
-        return f'User: {self.user_id.phone_number}. Kurs: {self.course_id.title}'
-
-    class Meta:
-        verbose_name = 'Sotib olingan kurs'
-        verbose_name_plural = 'Sotib olingan kurslar'
-
-
-class Completed_course(BaseModel):
-    """Tugatilgan kurslar"""
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Kurs')
-    
-    def __str__(self):
-        return f'User: {self.user_id.phone_number}. Kurs: {self.course_id.title}'
-
-    class Meta:
-        verbose_name = 'Tugatilgan kurs'
-        verbose_name_plural = 'Tugatilgan kurslar'
-
+     
 
 class UserProfile(BaseModel):
     """Foydalanuvchi uchun profil modeli"""

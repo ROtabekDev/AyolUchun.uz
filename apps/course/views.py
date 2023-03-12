@@ -16,3 +16,4 @@ class CategoryListAPIView(ListAPIView):
 class CourseListAPIView(ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseListSerializer
+    filterset_fields = ('category_id',)

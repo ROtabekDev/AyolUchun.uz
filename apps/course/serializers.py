@@ -31,10 +31,14 @@ class CourseListSerializer(ModelSerializer):
         
         if sum_ranking==None:
             sum_ranking=0 
-        print(count_ranking, sum_ranking)
+            
         try:
             ranking = sum_ranking/count_ranking
         except ZeroDivisionError:
             ranking=0
+
+        ranking = round(ranking, 1)
+        
         representation['ranking']=ranking
+        
         return representation
