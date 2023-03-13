@@ -3,7 +3,6 @@ from django.conf import settings
 from django.core.validators import MaxValueValidator,MinValueValidator
 
 from helpers.models import BaseModel
-from helpers.utils import get_timer
 
 from mutagen.mp4 import MP4, MP4StreamInfoError
 
@@ -88,14 +87,9 @@ class Episode(BaseModel):
         except MP4StreamInfoError:
             return 0.0 
     
-    def get_video(self):
-        return self.file.path
-    
+  
     def save(self,*args, **kwargs):
         self.length=self.get_video_length()
-        print(self.length)
-        print(self.file.path) 
-
         return super().save(*args, **kwargs)
     
     def __str__(self):

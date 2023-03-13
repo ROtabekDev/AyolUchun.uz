@@ -11,11 +11,14 @@ from .serializers import (
 
 from .models import Category_for_blog, Blog, Views
 
+from rest_framework.permissions import AllowAny
+
 from helpers.utils import get_client_ip
 
 class CategoryBlogListAPIView(ListAPIView):
     queryset = Category_for_blog.objects.all()
     serializer_class = CategoryBlogSerializer
+    permission_classes = (AllowAny,)
 
 class BlogListAPIView(ListAPIView):
     queryset = Blog.objects.all()
@@ -23,11 +26,13 @@ class BlogListAPIView(ListAPIView):
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ('title',) 
     filterset_fields = ('category_id',)
+    permission_classes = (AllowAny,)
 
 class BlogRetrieveAPIView(RetrieveAPIView):
     serializer_class = BlogDetailSerializer
     queryset = Blog.objects.all()
     lookup_field = 'slug'
+    permission_classes = (AllowAny,)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()

@@ -1,19 +1,27 @@
+from rest_framework.views import APIView
 from rest_framework.generics import (
     CreateAPIView, RetrieveAPIView, ListAPIView
 )
+from rest_framework import status
+from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .serializers import CreateContactSerializer, NotificationListSerializer, NotificationDetailSerializer
+from .serializers import (
+    CreateContactSerializer, NotificationListSerializer, 
+    NotificationDetailSerializer, CertificateSerializer
+)
 
-from .models import Notification
+from .models import Notification, Certificate
+
+from apps.course.models import Course
 
 class ContactCreateAPIView(CreateAPIView):
     serializer_class = CreateContactSerializer
 
 
 class NotificationListAPIView(ListAPIView):
-    serializer_class = NotificationDetailSerializer
+    serializer_class = NotificationListSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
@@ -37,3 +45,17 @@ class NotificationDetailAPIView(RetrieveAPIView):
         notification.save()  
          
         return Response(serializer.data)
+
+
+class CertificateListAPIView(APIView):
+
+    def get(self, request, course_slug):
+        try: 
+            course = Course.objects.get(slug=course_slug)  
+            certificate = Certificate.objects.get(course_id=course, user_id=request.user)
+            serializer = CertificateSerializer(certificate) 
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except:  
+            return Response(data={'message: bu kursda sizda sertifikat mavjud emas!'}, status=status.HTTP_400_BAD_REQUEST)
+
+        

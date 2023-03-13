@@ -3,6 +3,8 @@ from rest_framework.serializers import ModelSerializer
 
 from .models import Contact, Notification, Certificate
 
+from apps.course.serializers import CourseListSerializer
+
 class CreateContactSerializer(ModelSerializer):
 
     class Meta:
@@ -22,5 +24,12 @@ class NotificationDetailSerializer(ModelSerializer):
     class Meta:
         model = Notification
         fields = ('title', 'message', 'created_at')
+
+
+class CertificateSerializer(ModelSerializer):
+
+    class Meta:
+        model = Certificate
+        fields = ('course_id', 'user_id', 'file')
 
     
