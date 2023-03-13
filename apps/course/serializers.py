@@ -5,7 +5,7 @@ from .models import Category_for_course, Course, Section, Episode, Course_comple
 
 from apps.user.serializers import UserSerializer
 
-from django.db.models import Sum
+from django.db.models import Sum, Q
 
 from helpers.utils import get_timer
 
@@ -120,6 +120,11 @@ class CourseRetrieveSerializer(ModelSerializer):
         if sections.exists():
             serializer = SectionSerializer(sections, many=True)
             representation['sections'] = serializer.data  
+        
+        if sections.filter(~Q(section_type='Reviewed')).exists():
+            print('bingo')
+        else:
+            Completed_course.objects.create(user_id=self.context['request'].user, course_id=instance) 
 
         return representation
     

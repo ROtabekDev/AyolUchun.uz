@@ -61,7 +61,7 @@ class CourseRetrieveAPIView(RetrieveAPIView):
             else: 
                 section.section_type = 'Reviewed'
                 section.save()  
-
+        
         serializer = self.get_serializer(instance)
         
         return Response(serializer.data)
