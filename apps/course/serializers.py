@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from .models import Category_for_course, Course, Section, Episode, Course_completion, Video_comment, Purchased_course, Completed_course
+from .models import Category_for_course, Course, Section, Episode, Course_completion, Video_comment, Purchased_course, Completed_course, Episode_viewed
 
 from apps.user.serializers import UserSerializer
 
@@ -75,13 +75,13 @@ class EpisodeSerializer(ModelSerializer):
 class SectionSerializer(ModelSerializer):
     course_id = serializers.StringRelatedField()
     section_length_time = serializers.CharField(read_only=True)
-    episodes = serializers.DictField(read_only=True) 
+    episodes = serializers.DictField(read_only=True)
     
     class Meta:
         model = Section
         fields = ('section_title', 'section_number', 'section_type', 'is_public', 'course_id', 'section_length_time', 'episodes')
 
-
+     
     def to_representation(self, instance):
         representation = super().to_representation(instance) 
 
@@ -93,12 +93,11 @@ class SectionSerializer(ModelSerializer):
         section_length_time = get_timer(total_length)
  
         episodes = Episode.objects.filter(section_id=instance)
-
  
         if episodes.exists():
             serializer = EpisodeSerializer(episodes, many=True)
             representation['episodes']= serializer.data 
-
+            
         representation['section_length_time']=section_length_time
   
         return representation
@@ -118,7 +117,6 @@ class CourseRetrieveSerializer(ModelSerializer):
 
         sections = Section.objects.filter(course_id=instance)
 
- 
         if sections.exists():
             serializer = SectionSerializer(sections, many=True)
             representation['sections'] = serializer.data  
