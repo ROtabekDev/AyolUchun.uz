@@ -56,6 +56,7 @@ class Section(BaseModel):
         ('Not seen', 'Ko`rilmagan'),
         ('In progress', 'Jarayonda'),
         ('Reviewed', 'Ko`rilgan'),
+        ('Not purchased', 'Sotib olinmagan')
     )
 
     section_title = models.CharField('Sarlavhasi', max_length=150)

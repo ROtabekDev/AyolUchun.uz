@@ -129,6 +129,27 @@ class CourseRetrieveSerializer(ModelSerializer):
         return representation
     
 
+class CourseUnPaidRetrieveSerializer(ModelSerializer):
+    category_id = serializers.StringRelatedField()
+    sections = serializers.DictField(read_only=True)
+
+    class Meta:
+        model = Course
+        fields = ('id', 'title', 'category_id', 'desciption', 'slider', 'author', 'sections')
+
+        
+    def to_representation(self, instance):
+        representation = super().to_representation(instance) 
+
+        sections = Section.objects.filter(course_id=instance)
+
+        if sections.exists():
+            serializer = SectionSerializer(sections, many=True)
+            representation['sections'] = serializer.data  
+ 
+        return representation
+    
+
 class PurchasedCourseSerializer(ModelSerializer):
 
     class Meta:

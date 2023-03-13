@@ -18,7 +18,8 @@ from .serializers import (
     PurchasedCourseSerializer,
     CompletedCourseSerializer,
     CourseCompletionSerializer,
-    VideoCommentSerializar
+    VideoCommentSerializar,
+    CourseUnPaidRetrieveSerializer
 )
 
 
@@ -62,6 +63,46 @@ class CourseRetrieveAPIView(RetrieveAPIView):
                 section.section_type = 'Reviewed'
                 section.save()  
         
+        serializer = self.get_serializer(instance)
+        
+        return Response(serializer.data)
+
+
+class CourseUnPaidRetrieveAPIView(RetrieveAPIView):
+    serializer_class = CourseUnPaidRetrieveSerializer
+    queryset = Course.objects.all()
+    lookup_field = 'slug' 
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        public_sections = Section.objects.filter(course_id=instance).filter(is_public=True)
+
+        for section in public_sections:
+            episodes = Episode.objects.filter(section_id=section)
+            episode_viewed=0
+            episodes_length = episodes.count()
+
+            for episode in episodes:
+                if Episode_viewed.objects.filter(episode_id=episode, user_id=request.user).exists():
+                    episode_viewed +=1
+            
+            if episode_viewed == 0: 
+                section.section_type = 'Not seen'
+                section.save()
+            elif episode_viewed < episodes_length:  
+                section.section_type = 'In progress'
+                section.save()
+            else: 
+                section.section_type = 'Reviewed'
+                section.save()  
+        
+        private_sections = Section.objects.filter(course_id=instance).filter(is_public=False)
+
+        for section in private_sections: 
+            section.section_type = 'Not purchased'
+            section.save()
+
         serializer = self.get_serializer(instance)
         
         return Response(serializer.data)
