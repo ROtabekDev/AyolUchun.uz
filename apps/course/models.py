@@ -99,6 +99,20 @@ class Episode(BaseModel):
         verbose_name = 'Epizod'
         verbose_name_plural = 'Epizodlar'
 
+
+class Episode_viewed(BaseModel):
+    """Video ko`rilganligi"""
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    episode_id = models.ForeignKey(Episode, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.episode_id.title
+    
+    class Meta:
+        verbose_name = 'Video ko`rilganligi'
+        verbose_name_plural = 'Video ko`rilganligi'
+        
+
 class Purchased_course(BaseModel):
     """Sotib olingan kurslar"""
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Foydalanuvchi')

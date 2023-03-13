@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import (
-    Category_for_course, Course, Section, 
+    Category_for_course, Course, Section, Episode_viewed,
     Episode, Purchased_course, Completed_course, Course_completion, Video_comment
 )
 
@@ -54,3 +54,9 @@ class VideoCommentModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'parent', 'text', 'is_child') 
     list_display_links = ('user', 'text')
     list_filter = ('user',) 
+
+@admin.register(Episode_viewed)
+class EpisodeViewedModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_id', 'episode_id') 
+    list_display_links = ('user_id', 'episode_id')
+    list_filter = ('user_id', 'episode_id')    
