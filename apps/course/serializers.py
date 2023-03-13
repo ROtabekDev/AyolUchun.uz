@@ -54,7 +54,7 @@ class EpisodeSerializer(ModelSerializer):
     comments = serializers.DictField(read_only=True) 
     class Meta:
         model = Episode
-        fields = ('title', 'file', 'place_number', 'length', 'section_id', 'video_length_time', 'comments')
+        fields = ('title', 'slug', 'file', 'place_number', 'length', 'section_id', 'video_length_time', 'comments')
 
     def get_video_length_time(self, obj):
         return get_timer(obj.length)

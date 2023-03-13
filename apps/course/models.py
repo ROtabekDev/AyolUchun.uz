@@ -74,6 +74,7 @@ class Section(BaseModel):
 class Episode(BaseModel):
     """Videolar uchun model"""
     title = models.CharField('Nomi', max_length=150)
+    slug = models.SlugField('Slugi', max_length=150)
     file = models.FileField('Fayl', upload_to='course/episode/file/')
     place_number = models.PositiveIntegerField('Tartib nomeri', default=1)
     length = models.DecimalField(max_digits=100,decimal_places=2, blank=True, null=True, default=0)

@@ -28,11 +28,12 @@ class SectionModelAdmin(admin.ModelAdmin):
 @admin.register(Episode)
 class EpisodeModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'length', 'section_id')
+    prepopulated_fields = {"slug": ("title",)} 
     list_display_links = ('title',)  
 
 @admin.register(Purchased_course)
 class BlogModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'course_id') 
+    list_display = ('id', 'user_id', 'course_id')
     list_display_links = ('user_id', 'course_id')
     list_filter = ('user_id', 'course_id') 
 
@@ -57,6 +58,6 @@ class VideoCommentModelAdmin(admin.ModelAdmin):
 
 @admin.register(Episode_viewed)
 class EpisodeViewedModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'episode_id') 
+    list_display = ('id', 'user_id', 'episode_id')
     list_display_links = ('user_id', 'episode_id')
     list_filter = ('user_id', 'episode_id')    

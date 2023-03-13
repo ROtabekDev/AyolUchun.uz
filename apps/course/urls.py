@@ -4,7 +4,7 @@ from .views import (
     CategoryListAPIView, CourseListAPIView, 
     CourseRetrieveAPIView, PurchasedCourseCreateAPIView,
     CompletedCourseCreateAPIView, CourseCompletionCreateListAPIView,
-    CommentListCreateAPIView
+    CommentListCreateAPIView, StreamingVideoView
 )
 
 urlpatterns = [ 
@@ -17,4 +17,6 @@ urlpatterns = [
     path('create-list-course-completion/', CourseCompletionCreateListAPIView.as_view()),
     
     path('comment/list-create/', CommentListCreateAPIView.as_view()), 
+
+    path('stream-video/<str:slug>/', StreamingVideoView.as_view()),
 ]
