@@ -3,7 +3,6 @@ from rest_framework.generics import (
     CreateAPIView, RetrieveAPIView, ListAPIView
 )
 from rest_framework import status
-from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
