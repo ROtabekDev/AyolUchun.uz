@@ -25,7 +25,7 @@ class CourseListSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-  
+        
         if representation['is_discount'] == False:
             del representation['is_discount']
             del representation['discount_price']
@@ -42,8 +42,16 @@ class CourseListSerializer(ModelSerializer):
             ranking=0
         
         ranking = round(ranking, 1)
+
+        user = self.context['request'].user
+        
+        if Purchased_course.objects.filter(user_id=user, course_id=instance).exists():
+            representation['course_status']= 'Sotib olingan'
+        else:
+            representation['course_status']= 'Sotib olinmagan' 
         
         representation['ranking']=ranking
+
         
         return representation
     
