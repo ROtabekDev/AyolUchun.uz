@@ -45,8 +45,6 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         )
     email = models.EmailField('Elektron pochta', unique=True, blank=True, null=True)
     email_is_approad = models.BooleanField('Elektron pochta holati', default=False)
-    # paid_courses = models.ManyToManyField(Course, blank=True)
-    # completed_courses = models.ManyToManyField(Course, blank=True)
     is_active = models.BooleanField(default=True) 
     is_staff = models.BooleanField(default=False)     
 
