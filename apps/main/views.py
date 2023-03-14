@@ -46,7 +46,7 @@ class NotificationDetailAPIView(RetrieveAPIView):
         return Response(serializer.data)
 
 
-class CertificateListAPIView(APIView):
+class GetCertificateAPIView(APIView):
 
     def get(self, request, course_slug):
         try: 

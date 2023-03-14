@@ -3,6 +3,7 @@ import os
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import (
@@ -26,12 +27,14 @@ from .serializers import (
 class CategoryListAPIView(ListAPIView):
     queryset = Category_for_course.objects.all()
     serializer_class = CategoryForCourseListSerializer
+    pagination_class = (PageNumberPagination,)
 
 
 class CourseListAPIView(ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseListSerializer
     filterset_fields = ('category_id',)
+    pagination_class = (PageNumberPagination,)
 
 
 class CourseRetrieveAPIView(RetrieveAPIView):
@@ -124,6 +127,7 @@ class CommentListCreateAPIView(ListCreateAPIView):
     queryset = Video_comment.objects.all()
     serializer_class = VideoCommentSerializar
     filterset_fields = ('episode_id',)
+    pagination_class = (PageNumberPagination,)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

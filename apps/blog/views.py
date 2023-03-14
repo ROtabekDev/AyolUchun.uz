@@ -1,7 +1,7 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.response import Response
 from rest_framework import filters
-
+from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import (
@@ -19,6 +19,8 @@ class CategoryBlogListAPIView(ListAPIView):
     queryset = Category_for_blog.objects.all()
     serializer_class = CategoryBlogSerializer
     permission_classes = (AllowAny,)
+    pagination_class = (PageNumberPagination,)
+    
 
 class BlogListAPIView(ListAPIView):
     queryset = Blog.objects.all()
@@ -27,6 +29,7 @@ class BlogListAPIView(ListAPIView):
     search_fields = ('title',) 
     filterset_fields = ('category_id',)
     permission_classes = (AllowAny,)
+    pagination_class = (PageNumberPagination,)
 
 class BlogRetrieveAPIView(RetrieveAPIView):
     serializer_class = BlogDetailSerializer

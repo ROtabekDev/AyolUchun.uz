@@ -3,9 +3,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import (
     CreateAPIView, RetrieveAPIView, UpdateAPIView
 )
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
 
-from .models import User, UserProfile
+from .models import UserProfile
 
 
 from .serializers import (
